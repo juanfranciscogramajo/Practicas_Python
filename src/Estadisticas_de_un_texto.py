@@ -10,19 +10,17 @@ Although practicality beats purity.
 Errors should never pass silently.
 Unless explicitly silenced.
 In the face of ambiguity, refuse the temptation to guess.
-There should be one-- and preferably only one --obvious way
-to do it.
-Although that way may not be obvious at first unless you're
-Dutch.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
 Now is better than never.
 Although never is often better than *right* now.
 If the implementation is hard to explain, it's a bad idea.
-If the implementation is easy to explain, it may be a good
-idea.
-Namespaces are one honking great idea -- let's do more of
-those!"""
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!"""
 
-linesCount = text.count("\n") 
-wordCount = len(text.split())
-lineAverage = int(wordCount / linesCount)
-print (f"Total de lineas: {linesCount} \n Total de palabras: {wordCount}\n Promedio de palabras por linea: {lineAverage}")
+linesCount = text.count(".") + text.count("!") 
+wordCount = len(text.split()) 
+lineAverage = round(wordCount / linesCount, 2)
+linesOverAverage = [line for line in text.split("\n") if len(line.split()) > lineAverage]
+print (f"Total de lineas: {linesCount} \n Total de palabras: {wordCount}\n Promedio de palabras por linea: {lineAverage} \n Lineas por encima del promedio ({lineAverage} palabras): \n ")
+for line in linesOverAverage: print(f'- "{line}"({len(line.split())} palabras)\n')
