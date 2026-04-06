@@ -1,111 +1,69 @@
-rounds = [
-{
-'theme': 'Entrada',
-'scores': {
-'Valentina': {'judge_1': 8, 'judge_2': 7,
-'judge_3': 9},
-'Mateo': {'judge_1': 7, 'judge_2': 8,
-'judge_3': 7},
-'Camila': {'judge_1': 9, 'judge_2': 9,
-'judge_3': 8},
-'Santiago': {'judge_1': 6, 'judge_2': 7,
-'judge_3': 6},
-'Lucía': {'judge_1': 8, 'judge_2': 8,
-'judge_3': 8},
-}
-},
-{
-'theme': 'Plato principal',
-'scores': {
-'Valentina': {'judge_1': 9, 'judge_2': 9,
-'judge_3': 8},
-'Mateo': {'judge_1': 8, 'judge_2': 7,
-'judge_3': 9},
-'Camila': {'judge_1': 7, 'judge_2': 6,
-'judge_3': 7},
-'Santiago': {'judge_1': 9, 'judge_2': 8,
-'judge_3': 8},
-'Lucía': {'judge_1': 7, 'judge_2': 8,
-'judge_3': 7},
-}
-},
-{
-'theme': 'Postre',
-'scores': {
-'Valentina': {'judge_1': 7, 'judge_2': 8,
-'judge_3': 7},
-'Mateo': {'judge_1': 9, 'judge_2': 9,
-'judge_3': 8},
-'Camila': {'judge_1': 8, 'judge_2': 7,
-'judge_3': 9},
-'Santiago': {'judge_1': 7, 'judge_2': 7,
-'judge_3': 6},
-'Lucía': {'judge_1': 9, 'judge_2': 9,
-'judge_3': 9},
-}
-},
-{
-'theme': 'Cocina internacional',
-'scores': {
-'Valentina': {'judge_1': 8, 'judge_2': 9,
-'judge_3': 9},
-'Mateo': {'judge_1': 7, 'judge_2': 6,
-'judge_3': 7},
-'Camila': {'judge_1': 9, 'judge_2': 8,
-'judge_3': 8},
-'Santiago': {'judge_1': 8, 'judge_2': 9,
-'judge_3': 7},
-'Lucía': {'judge_1': 7, 'judge_2': 7,
-'judge_3': 8},
-}
-},
-{
-'theme': 'Final libre',
-'scores': {
-'Valentina': {'judge_1': 9, 'judge_2': 8,
-'judge_3': 9},
-'Mateo': {'judge_1': 8, 'judge_2': 9,
-'judge_3': 8},
-'Camila': {'judge_1': 7, 'judge_2': 7,
-'judge_3': 7},
-'Santiago': {'judge_1': 9, 'judge_2': 9,
-'judge_3': 9},
-'Lucía': {'judge_1': 8, 'judge_2': 8,
-'judge_3': 7},
-}
-}
-]
-ranking = { 'Valentina':{'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
-           'Lucía':{'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
-           'Mateo':{'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
-           'Camila':{'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
-           'Santiago':{'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0}}
-cant_rondas = 1
-for ronda in rounds:
-    puntaje_ronda = ronda['scores']
-    ganador_puntaje = -1
-    ganador_nombre = ''
-    for chef in puntaje_ronda:
-        puntaje_jueces = puntaje_ronda[chef]
-        puntaje_total = sum(puntaje_jueces.values())
-        if ganador_puntaje < puntaje_total:
-            ganador_nombre = chef // preguntar
-            ganador_puntaje = puntaje_total
-        ranking[chef]['Puntaje'] += puntaje_total
-        if ranking[chef]['Mejor ronda'] < puntaje_total:
-            ranking[chef]['Mejor ronda'] = puntaje_total
-        ranking[chef]['Promedio'] = ranking[chef]['Puntaje'] / cant_rondas
-    ranking[ganador_nombre]['Rondas ganadas'] += 1   
-    print(f"Ronda {cant_rondas} - {ronda['theme']}:\n Ganador: {ganador_nombre} ({ganador_puntaje} pts)")
-    print(f" tabla de posiciones: \n")
-    for chef, stats in ranking.items():
-        print(f"{chef}: Puntaje: {stats['Puntaje']}, Rondas ganadas: {stats['Rondas ganadas']}, Mejor ronda: {stats['Mejor ronda']}, Promedio: {stats['Promedio']}")
-    cant_rondas += 1
+def obtener_PuntajeTotal(puntajes_jueces):
+    """Obtiene el puntaje total de un chef a partir de los puntajes de los jueces."""
+    return sum(puntajes_jueces.values())
 
-print('Tabla final de posiciones final:')
-# Ordenamos el ranking: 'reverse=True' para que el mayor puntaje vaya primero
-ranking_final = sorted(ranking.items(), key=lambda x: x[1]['Puntaje'], reverse=True)
+def calcular_promedio(puntaje_total, rondas):
+    """Calcula el promedio de puntaje por ronda."""
+    return puntaje_total / rondas if rondas > 0 else 0
 
-for chef, stats in ranking_final:
-    print(f"{chef}: Puntaje: {stats['Puntaje']}, Rondas ganadas: {stats['Rondas ganadas']}, Mejor ronda: {stats['Mejor ronda']}, Promedio: {stats['Promedio']}")
+def actualizar_mejor_ronda(chef, puntos_actuales, ranking, ronda_actual):
+    """Compara y actualiza si el puntaje actual es el mejor del chef."""
+    if puntos_actuales > ranking[chef]['Mejor ronda']:
+        ranking[chef]['Mejor ronda'] = puntos_actuales
+def actualizar_ranking(chef, puntos_actuales, ranking):
+    """Actualiza el ranking del chef con el puntaje actual."""
+    ranking[chef]['Puntaje'] += puntos_actuales
+    actualizar_mejor_ronda(chef, puntos_actuales, ranking)
+    ranking[chef]['Promedio'] = calcular_promedio(ranking[chef]['Puntaje'], ronda_actual)
+def imprimir_tabla_posiciones(dict_ranking, titulo="Tabla de posiciones"):
+    """Ordena el ranking por puntaje e imprime la tabla."""
+    print(f"\n{titulo}:")
+    
+    # 1. Ordenamos de mayor a menor puntaje
+    ranking_ordenado = sorted(dict_ranking.items(), key=lambda x: x[1]['Puntaje'], reverse=True)
+    
+    # 2. Imprimimos fila por fila
+    for chef, stats in ranking_ordenado:
+        # Usamos {chef:10} para que todos los nombres ocupen 10 espacios y quede alineado
+        print(f"{chef:10} | Puntaje: {stats['Puntaje']:3} | Rondas ganadas: {stats['Rondas ganadas']} | Mejor ronda: {stats['Mejor ronda']:2} | Promedio: {stats['Promedio']}")
+    
+    print("-" * 65) # Una línea divisoria para que quede prolijo
 
+def simular_competencia(rondas):
+    """Ejecuta la simulación completa de la competencia ronda por ronda."""
+    
+    # El diccionario inicial debe estar dentro de la función
+    ranking = { 
+        'Valentina': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
+        'Lucía': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
+        'Mateo': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
+        'Camila': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
+        'Santiago': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0}
+    }
+    
+    cant_rondas = 1
+    
+    for ronda in rondas:
+        puntaje_ronda = ronda['scores']
+        ganador_puntaje = -1
+        ganador_nombre = ''
+        
+        for chef in puntaje_ronda:
+            puntaje_jueces = puntaje_ronda[chef]
+            puntaje_total = obtener_PuntajeTotal(puntaje_jueces)
+            
+            if ganador_puntaje < puntaje_total:
+                ganador_nombre = chef 
+                ganador_puntaje = puntaje_total
+                
+            # Llamamos a la función con el parámetro extra (cant_rondas)
+            actualizar_ranking(chef, puntaje_total, ranking, cant_rondas)
+            
+        ranking[ganador_nombre]['Rondas ganadas'] += 1   
+        
+        print(f"Ronda {cant_rondas} - {ronda['theme']}:\n Ganador: {ganador_nombre} ({ganador_puntaje} pts)")
+        imprimir_tabla_posiciones(ranking)
+        
+        cant_rondas += 1
+        
+    imprimir_tabla_posiciones(ranking, titulo="Ranking final")
