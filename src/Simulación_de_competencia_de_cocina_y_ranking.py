@@ -4,7 +4,9 @@ def obtener_PuntajeTotal(puntajes_jueces):
 
 def calcular_promedio(puntaje_total, ronda_actual):
     """Calcula el promedio de puntaje por ronda."""
-    return puntaje_total / ronda_actual if ronda_actual > 0 else 0
+    if ronda_actual > 0:
+        return round(puntaje_total / ronda_actual, 2)
+    return 0.0
 
 def actualizar_mejor_ronda(chef, puntos_actuales, ranking):
     """Compara y actualiza si el puntaje actual es el mejor del chef."""
@@ -65,4 +67,4 @@ def simular_competencia(rondas):
         
         cant_rondas += 1
         
-    imprimir_tabla_posiciones(ranking, titulo="Ranking final")
+    imprimir_tabla_posiciones(ranking, titulo="Tabla de posiciones final: ")
