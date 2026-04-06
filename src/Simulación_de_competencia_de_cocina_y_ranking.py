@@ -2,15 +2,15 @@ def obtener_PuntajeTotal(puntajes_jueces):
     """Obtiene el puntaje total de un chef a partir de los puntajes de los jueces."""
     return sum(puntajes_jueces.values())
 
-def calcular_promedio(puntaje_total, rondas):
+def calcular_promedio(puntaje_total, ronda_actual):
     """Calcula el promedio de puntaje por ronda."""
-    return puntaje_total / rondas if rondas > 0 else 0
+    return puntaje_total / ronda_actual if ronda_actual > 0 else 0
 
-def actualizar_mejor_ronda(chef, puntos_actuales, ranking, ronda_actual):
+def actualizar_mejor_ronda(chef, puntos_actuales, ranking):
     """Compara y actualiza si el puntaje actual es el mejor del chef."""
     if puntos_actuales > ranking[chef]['Mejor ronda']:
         ranking[chef]['Mejor ronda'] = puntos_actuales
-def actualizar_ranking(chef, puntos_actuales, ranking):
+def actualizar_ranking(chef, puntos_actuales, ranking, ronda_actual):
     """Actualiza el ranking del chef con el puntaje actual."""
     ranking[chef]['Puntaje'] += puntos_actuales
     actualizar_mejor_ronda(chef, puntos_actuales, ranking)
@@ -32,7 +32,6 @@ def imprimir_tabla_posiciones(dict_ranking, titulo="Tabla de posiciones"):
 def simular_competencia(rondas):
     """Ejecuta la simulación completa de la competencia ronda por ronda."""
     
-    # El diccionario inicial debe estar dentro de la función
     ranking = { 
         'Valentina': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
         'Lucía': {'Puntaje': 0, 'Rondas ganadas': 0, 'Mejor ronda':0, 'Promedio': 0.0},
